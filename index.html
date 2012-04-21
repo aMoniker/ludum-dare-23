@@ -3,24 +3,31 @@
 <head>
     <title>ludum-dare-23</title>
     <style type="text/css">
+        body {
+            margin: 0;
+            padding: 0;
+        }
         #content {
             height: 100%;
             width: 100%;
+            margin: 0;
+            padding: 0;
             position: relative;
-            background: #000;
+            background: #151515;
         }
         #the_canvas {
             position: fixed;
             top: 50%;
             left: 50%;
-            margin: -250px 0 0 -250px;
+            margin: -350px 0 0 -350px;
+            background: #000;
         }
     </style>
 </head>
 
 <body>
     <div id="content">
-        <canvas id="the_canvas" height="500" width="500"></canvas>
+        <canvas id="the_canvas" height="700" width="700"></canvas>
     </div>
 </body>
 
