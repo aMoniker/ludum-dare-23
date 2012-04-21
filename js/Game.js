@@ -5,6 +5,7 @@ window.Game = Base.extend({
     ,p1: undefined
     ,p2: undefined
     ,ticker: undefined
+    ,degree_direction: 0
     ,constructor: function() {
         console.warn('g init', this);
         var self = this;
@@ -20,14 +21,17 @@ window.Game = Base.extend({
         this.p2 = new Player;
         this.p2.zone.center.x = this.p2.world.center.x = this.board.width - (this.p2.zone.radius + this.p2.zone.padding);
         this.p2.zone.center.y = this.p2.world.center.y = this.p2.zone.radius + this.p2.zone.padding;
+
+        // make one asteroid
+        this.asteroid = new Asteroid(this.board.width / 2, this.board.height / 2, 25, 1, 30);
         
         // set main loop
         this.ticker = setInterval(function() {
             self.tick.call(self);
-        }, 25);
+        }, 10);
     }
     ,update: function() {
-
+        this.asteroid.update();
     }
     ,draw: function() {
         this.board.clear();
@@ -35,6 +39,9 @@ window.Game = Base.extend({
         this.board.draw();
         this.p1.draw();
         this.p2.draw();
+
+        // A SINGLE ROCK, FLOATING THROUGH SPACE
+        this.asteroid.draw();
     }
     ,tick: function() {
         this.update();
