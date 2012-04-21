@@ -1,16 +1,18 @@
 $(function() {
     window.Asteroid = Base.extend({
          radius: undefined
-        ,center: undefined
         ,speed: undefined
-        ,direction: undefined
+        ,vector: undefined
         ,min_speed: 1
         ,max_speed: 10
+        ,last_touched: undefined
+        ,touch_timer: undefined
         ,constructor: function(x, y, r, s, d) {
             this.radius = r;
-            this.center = {x: x, y: x}
             this.speed = s;
-            this.direction = d;
+            this.vector = [x, y, d];
+            this.touch_timer = 100;
+            this.last_touched = +new Date() - this.touch_timer;
         }
         ,update: function() {
             if (this.speed > this.max_speed) {
@@ -21,29 +23,35 @@ $(function() {
             }
 
             var distance = this.speed; // flat speed per tick
-            var rad_direction = ((this.direction - 90) * (Math.PI / 180));
+            var rad_direction = ((this.vector[2] - 90) * (Math.PI / 180));
             var slope = Math.tan(rad_direction);
             var cx = Math.cos(rad_direction) * distance;
             var cy = slope * cx;
 
-            this.center.x = this.center.x + cx;
-            this.center.y = this.center.y + cy;
+            this.vector[0] = this.vector[0] + cx;
+            this.vector[1] = this.vector[1] + cy;
 
-            if (this.center.x < 0) {
-                this.center.x = g.board.width;
+            if (this.vector[0] < 0) {
+                this.vector[0] = g.board.width;
             }
-            if (this.center.x > g.board.width) {
-                this.center.x = 0;
+            if (this.vector[0] > g.board.width) {
+                this.vector[0] = 0;
             }
-            if (this.center.y < 0) {
-                this.center.y = g.board.height;
+            if (this.vector[1] < 0) {
+                this.vector[1] = g.board.height;
             }
-            if (this.center.y > g.board.height) {
-                this.center.y = 0;
+            if (this.vector[1] > g.board.height) {
+                this.vector[1] = 0;
             }
         }
+        ,can_touch: function() {
+            return (+new Date() - this.last_touched > this.touch_timer);
+        }
+        ,touch: function() {
+            this.last_touched = +new Date();
+        }
         ,draw: function() {
-            g.board.draw_circle(this.center.x, this.center.y, this.radius, '#34A632', true);
+            g.board.draw_circle(this.vector[0], this.vector[1], this.radius, '#34A632', true);
         }
     });
 });

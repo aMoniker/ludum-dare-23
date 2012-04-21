@@ -26,7 +26,7 @@ window.Game = Base.extend({
         this.p2.zone.center.y = this.p2.world.center.y = this.p2.zone.radius + this.p2.zone.padding;
 
         // make one asteroid
-        this.asteroid = new Asteroid(this.board.width / 2, this.board.height / 2, 25, 1, 30);
+        this.asteroid = new Asteroid(this.board.width / 2, this.board.height / 2, 25, 0, 30);
         
         // set main loop
         this.ticker = setInterval(function() {
@@ -35,14 +35,23 @@ window.Game = Base.extend({
     }
     ,update: function() {
         this.board.update();
-
         this.asteroid.update();
 
         //check if asteroid and paddle intersect
-        if (this.utils.circles_intersect(this.asteroid.center.x , this.asteroid.center.y , this.asteroid.radius,
+        if (this.utils.circles_intersect(this.asteroid.vector[0] , this.asteroid.vector[1] , this.asteroid.radius,
                                          this.board.mouse.x_real, this.board.mouse.y_real, this.board.mouse.radius)
+         && this.asteroid.can_touch()
         ) {
-            console.warn('collision!');
+            // asteroid change direction!
+            var slope = (this.asteroid.vector[1] - this.board.mouse.y_real) / (this.asteroid.vector[0] - this.board.mouse.x_real);
+            var rad_direction = Math.atan(slope);
+            var deg_direction = (rad_direction * (180 / Math.PI)) + 90;
+
+            if (this.board.mouse.x_real < this.asteroid.vector[0]) {
+                deg_direction += 180; //hax
+            }
+            this.asteroid.vector[2] = (deg_direction + 180) % 360;
+            this.asteroid.touch();
         }
     }
     ,draw: function() {
