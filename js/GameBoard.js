@@ -25,12 +25,34 @@ window.GameBoard = Base.extend({
         this.width = this.$canvas.width();
         this.height = this.$canvas.height();
         this.context = this.$canvas[0].getContext('2d');
-        this.mouse = {};
+        this.mouse = {
+            radius: 20
+        };
 
         // mouse movement
         $(document).bind('mousemove', function(e) {
             self.handlers.mouse_move.call(self, e);
         });
+    }
+
+    // update
+    ,update: function() {
+        // draw mouse paddle
+        var left = this.$canvas.offset().left;
+        var top = this.$canvas.offset().top;
+
+        this.mouse.x_real = this.mouse.x - left;
+        this.mouse.y_real = this.mouse.y - top;
+
+        if (this.mouse.x >= left
+         && this.mouse.x <= (left + this.width)
+         && this.mouse.y >= top
+         && this.mouse.y <= (top + this.height)
+        ) {
+            this.mouse.draw = true;
+        } else {
+            this.mouse.draw = false;
+        }
     }
 
     // drawing
@@ -47,14 +69,8 @@ window.GameBoard = Base.extend({
     }
     ,draw: function() {
         // draw mouse paddle
-        var left = this.$canvas.offset().left;
-        var top = this.$canvas.offset().top;
-        if (this.mouse.x >= left
-         && this.mouse.x <= (left + this.width)
-         && this.mouse.y >= top
-         && this.mouse.y <= (top + this.height)
-        ) {
-            this.draw_circle(this.mouse.x - left, this.mouse.y - top, 20, '#D6471B', true);
+        if (this.mouse.draw) {
+            this.draw_circle(this.mouse.x_real, this.mouse.y_real, this.mouse.radius, '#D6471B', true);
         }
     }
     ,set_color: function(color) {

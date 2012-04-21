@@ -10,6 +10,9 @@ window.Game = Base.extend({
         console.warn('g init', this);
         var self = this;
 
+        // utils access
+        this.utils = new GameUtils;
+
         // create board
         this.board = new GameBoard;
 
@@ -31,7 +34,16 @@ window.Game = Base.extend({
         }, 10);
     }
     ,update: function() {
+        this.board.update();
+
         this.asteroid.update();
+
+        //check if asteroid and paddle intersect
+        if (this.utils.circles_intersect(this.asteroid.center.x , this.asteroid.center.y , this.asteroid.radius,
+                                         this.board.mouse.x_real, this.board.mouse.y_real, this.board.mouse.radius)
+        ) {
+            console.warn('collision!');
+        }
     }
     ,draw: function() {
         this.board.clear();
