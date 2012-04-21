@@ -11,21 +11,21 @@ window.GameBoard = Base.extend({
         this.width = $canvas.width();
         this.height = $canvas.height();
         this.context = $canvas[0].getContext('2d');
-
-        // draw player zones
-        var radius = 150;
-        var padding = radius / 2;
-        this.context.strokeStyle = '#34A632';
-
+    }
+    ,set_color: function(color) {
+        this.context.strokeStyle = color;
+        this.context.fillStyle = color;
+    }
+    ,draw_circle: function(x, y, r, color, fill) {
+        this.set_color(color);
         this.context.beginPath();
-        this.context.arc(radius+padding, this.height - (radius+padding), radius, 0, Math.PI*2, true);
+        this.context.arc(x, y, r, 0, Math.PI*2, true);
         this.context.closePath();
-        this.context.stroke();
-
-        this.context.beginPath();
-        this.context.arc(this.width - (radius+padding), radius+padding, radius, 0, Math.PI*2, true);
-        this.context.closePath();
-        this.context.stroke();
+        if (fill) {
+            this.context.fill();
+        } else {
+            this.context.stroke();
+        }
     }
 });
 
