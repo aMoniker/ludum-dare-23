@@ -1,5 +1,5 @@
 $(function() {
-    
+
 window.GameBoard = Base.extend({
      width: undefined
     ,height: undefined
@@ -14,7 +14,7 @@ window.GameBoard = Base.extend({
 
         // draw player zones
         var radius = 150;
-        var padding = 50;
+        var padding = radius / 2;
         this.context.strokeStyle = '#34A632';
 
         this.context.beginPath();
