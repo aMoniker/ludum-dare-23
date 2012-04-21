@@ -4,7 +4,7 @@
 	License: http://www.opensource.org/licenses/mit-license.php
 */
 
-var Base = function() {
+window.Base = function() {
 	// dummy
 };
 
