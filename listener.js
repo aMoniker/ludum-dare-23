@@ -41,10 +41,36 @@ function handler (req, res) {
 }
 
 io.sockets.on('connection', function (socket) {
-  socket.on('update_state', function (state) {
-    redis.set(socket.id, JSON.stringify(state));
-    redis.expire(socket.id, 60);
 
+  socket.on('new_game', function() {
+    // get a unique id
+    var game_id = +new Date();
+    while (redis.exists(game_id)) {
+      game_id = +new Date();
+    }
+
+    // set game state
+    redis.set(game_id, 'waiting');
+    redis.set(game_id +':'+ socket.id, true);
+    redis.set(game_id +':'+ 'server', true);
+
+    // clear new game listener
+    socket.on('new_game', function(){});
+
+    // return new game_id
+    socket.emit('new_game_id', game_id);
+  });
+
+  socket.on('update_state', function (state, game_id) {
+    var client_id = game_id +':'+ socket.id;
+
+    // store state
+    if (redis.exists(client_id)) {
+      redis.set(client_id, JSON.stringify(state));
+      redis.expire(client_id, 60);
+    }
+    
+    /*
     redis.get(socket.id, function (err, reply) {
         if (err !== null) {
           stored_value = err;
@@ -52,7 +78,8 @@ io.sockets.on('connection', function (socket) {
           stored_value = reply;
         }
 
-        socket.emit('update_client', stored_value);
+        //socket.emit('update_client', stored_value);
     });
+    */
   });
 });
