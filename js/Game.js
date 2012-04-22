@@ -32,7 +32,7 @@ window.Game = Base.extend({
         this.p2.zone.center.y = this.p2.world.center.y = this.p2.zone.radius + this.p2.zone.padding;
 
         // create asteroid field
-        this.af = new AsteroidField;
+        this.af = new AsteroidField(10);
         
         // set main loop
         this.ticker = setInterval(function() {
