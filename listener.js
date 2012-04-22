@@ -41,7 +41,6 @@ function handler (req, res) {
 }
 
 io.sockets.on('connection', function (socket) {
-  socket.emit('news', { hello: 'world' });
   socket.on('update_state', function (state) {
     redis.set(socket.id, JSON.stringify(state));
     redis.expire(socket.id, 60);
