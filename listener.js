@@ -39,7 +39,7 @@ io.sockets.on('connection', function (socket) {
         redis.zadd('game_list', 2, game_id);
         redis.set(game_id +':'+ socket.id, true);
 
-        console.log(socket.id + ' joined a game (' +game_id+ ')');
+        console.log(socket.id + ' joined a game       (' +game_id+ ')');
       } else {
         // make a new game if none are available
 
