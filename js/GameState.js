@@ -4,6 +4,8 @@ $(function() {
         ,game_id: undefined
         ,constructor: function() {
             this.socket = io.connect('http://ld.greenleaflaboratories.com:1337');
+
+            // game events
             this.socket.on('update_client', this.update_client);
         }
         ,update_state: function(state) {
@@ -15,7 +17,9 @@ $(function() {
         ,new_game: function() {
             this.socket.on('new_game_id', function(game_id) {
                 this.game_id = game_id;
+                this.socket.on('new_game_id', function(){});
             });
+            
             this.socket.emit('new_game');
         }
     });

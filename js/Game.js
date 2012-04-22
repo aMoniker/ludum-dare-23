@@ -42,6 +42,7 @@ window.Game = Base.extend({
         // blank state
         this.state = {};
         this.gs = new GameState;
+        this.gs.new_game();
     }
     ,update: function() {
         this.board.update();
