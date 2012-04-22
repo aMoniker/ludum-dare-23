@@ -60,20 +60,17 @@ io.sockets.on('connection', function (socket) {
 
     // return new game_id
     socket.emit('new_game_id', game_id);
-  });
+  }); 
 
   socket.on('update_state', function (state, game_id) {
     var client_id = game_id +':'+ socket.id;
-
-    console.log(client_id + ' updated their state');
 
     // store state
     if (redis.exists(client_id)) {
       redis.set(client_id, JSON.stringify(state));
       redis.expire(client_id, 60);
     }
-    
-    /*
+
     redis.get(socket.id, function (err, reply) {
         if (err !== null) {
           stored_value = err;
@@ -81,7 +78,7 @@ io.sockets.on('connection', function (socket) {
           stored_value = reply;
         }
 
-        //socket.emit('update_client', stored_value);
+        socket.emit('update_client', stored_value);
     });
     */
   });
