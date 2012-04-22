@@ -49,7 +49,7 @@ io.sockets.on('connection', function (socket) {
     redis.get(socket.id, function (err, reply) {
         console.log('err', err);
         //console.log('reply', reply);
-        if (err) {
+        if (err !== null) {
           stored_value = err;
         } else {
           stored_value = reply;
