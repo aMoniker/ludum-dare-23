@@ -30,49 +30,39 @@ function handler (req, res) {
 io.sockets.on('connection', function (socket) {
 
   socket.on('new_game', function() {
-
     // see if there are any games available
     var game_id = null;
     redis.zrangebyscore('game_list', 1, 1, function(err, reply) {
       if (!$.isEmptyObject(reply)) {
-
-        console.log('reply', reply);
-
-        // take the first game
+        // take the first game if one is available
         game_id = reply[0];
         redis.zadd('game_list', 2, game_id);
         redis.set(game_id +':'+ socket.id, true);
 
         console.log(socket.id + ' joined a game (' +game_id+ ')');
+      } else {
+        // make a new game if none are available
 
-        socket.emit('new_game_id', game_id);
+        game_id = +new Date();
+        while (redis.exists(game_id)) {
+          // ensure unique game_id
+          game_id = +new Date();
+        }
+
+        // set game state
+        redis.zadd('game_list', 1, game_id);
+        redis.set(game_id, 'waiting');
+        redis.set(game_id +':'+ socket.id, true);
+        redis.set(game_id +':'+ 'server', null);
+        console.info(socket.id + ' started a new game (' +game_id+ ')');
+
+        // clear new game listener (does this work?)
+        socket.on('new_game', function(){});
       }
+
+      // give client their game_id
+      socket.emit('new_game_id', game_id);
     });
-    if (game_id) {
-      // found a game, get out of here
-      return;
-    }
-
-    // otherwise... start a NEW GAME
-
-    // get a unique id
-    game_id = +new Date();
-    while (redis.exists(game_id)) {
-      game_id = +new Date();
-    }
-
-    // set game state
-    console.info(socket.id + ' started a new game (' +game_id+ ')');
-    redis.zadd('game_list', 1, game_id);
-    redis.set(game_id, 'waiting');
-    redis.set(game_id +':'+ socket.id, true);
-    redis.set(game_id +':'+ 'server', null);
-
-    // clear new game listener
-    socket.on('new_game', function(){});
-
-    // return new game_id
-    socket.emit('new_game_id', game_id);
   }); 
 
   socket.on('update_state', function (state, game_id) {
