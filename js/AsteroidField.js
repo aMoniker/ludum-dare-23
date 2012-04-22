@@ -45,7 +45,7 @@ $(function() {
                     rock.vector[2] = g.utils.mouse_bump(rock.vector[0], rock.vector[1], g.board.mouse.x_real, g.board.mouse.y_real);
                     rock.speed *= 2;
                     rock.touch();
-                    g.gs.update_state();
+                    g.gs.update_state(g.state);
                 }
 
                 //check if asteroid and any other asteroid intersect
