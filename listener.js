@@ -81,10 +81,18 @@ io.sockets.on('connection', function (socket) {
   });
 
   socket.on('request_state', function (game_id) {
-    if (game_id === undefined) { return; }
+    console.log(socket.id + ' requested state...')
+
+    if (game_id === undefined) { 
+      console.log(socket.id + ' request_state: game_id undefined');
+      return;
+    }
 
     var server_id = game_id + ':server';
     redis.get(server_id, function (err, reply) {
+      console.log('request state err', err);
+      console.log('request state reply', reply);
+
       if (err !== null && reply !== null) {
         socket.emit('update_client', reply);
 
