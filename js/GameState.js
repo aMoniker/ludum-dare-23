@@ -7,14 +7,15 @@ $(function() {
 
             // game events
             this.socket.on('update_client', this.update_client);
+            this.socket.on('new_message', this.new_message);
         }
+
+        // emitters
         ,update_state: function(state) {
             this.socket.emit('update_state', state, this.game_id);
         }
-        ,update_client: function(state) {
-            // handle client side state updates
-            var the_state = $.parseJSON(state);
-            g.af.force_field(the_state.rocks);
+        ,send_message: function(message) {
+            this.socket.emit('send_message', message);
         }
         ,new_game: function() {
             var self = this;
@@ -24,6 +25,16 @@ $(function() {
             });
 
             this.socket.emit('new_game');
+        }
+
+        // receivers
+        ,update_client: function(state) {
+            // handle client side state updates
+            var the_state = $.parseJSON(state);
+            g.af.force_field(the_state.rocks);
+        }
+        ,new_message: function(message) {
+            $('#messages').html($('#messages').html() + '<br>' + message);
         }
     });
 });

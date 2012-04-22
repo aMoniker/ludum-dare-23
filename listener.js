@@ -77,6 +77,7 @@ io.sockets.on('connection', function (socket) {
       redis.expire(client_id, 60);
     }
 
+    /*
     redis.get(client_id, function (err, reply) {
         if (err !== null) {
           stored_value = err;
@@ -86,5 +87,11 @@ io.sockets.on('connection', function (socket) {
 
         socket.emit('update_client', stored_value);
     });
+    */
+
+    socket.on('send_message', function (message) {
+      socket.emit('new_message', message);
+    });
+
   });
 });
