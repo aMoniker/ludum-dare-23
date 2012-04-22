@@ -1,8 +1,8 @@
 var app = require('http').createServer(handler)
   , io = require('socket.io').listen(app)
   , fs = require('fs')
-  , rs = require('redis');
-  , redis = rs.createClient();
+  , rs = require('redis')
+  , redis = rs.createClient()
 
 
 redis.on("error", function (err) {
