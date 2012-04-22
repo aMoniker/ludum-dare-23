@@ -67,6 +67,8 @@ io.sockets.on('connection', function (socket) {
   socket.on('update_state', function (state, game_id) {
     //var client_id = game_id +':'+ socket.id;
 
+    console.log(socket.id + ' updates state to ', state);
+
     //update the server directly for debugging
     var client_id = game_id + ':server';
 
