@@ -9,20 +9,6 @@ redis.on("error", function (err) {
     console.log("Error " + err);
 });
 
-/*
-client.set("string key", "string val", redis.print);
-client.hset("hash key", "hashtest 1", "some value", redis.print);
-client.hset(["hash key", "hashtest 2", "some other value"], redis.print);
-client.hkeys("hash key", function (err, replies) {
-    console.log(replies.length + " replies:");
-    replies.forEach(function (reply, i) {
-        console.log("    " + i + ": " + reply);
-    });
-    client.quit();
-});
-*/
-
-
 music.listen(1337);
 
 io.set('log level', 1);
@@ -43,25 +29,27 @@ function handler (req, res) {
 io.sockets.on('connection', function (socket) {
 
   socket.on('new_game', function() {
+
     // see if there are any games available
-
-    // list all games with 1 player
-    //var games_available = redis.zrangebyscore('game_list', 1, 1);
-    //console.log('games_available', games_available);
-
+    var game_id = null;
     redis.zrangebyscore('game_list', 1, 1, function(err, reply) {
-      console.log('err', err);
-      console.log('reply', reply);
+      if (reply) {
+        // take the first game
+        game_id = reply[0];
+        redis.zadd('game_list', 2, game_id);
+        redis.set(game_id +':'+ socket.id, true);
+        socket.emit('new_game_id', game_id);
+      }
     });
+    if (game_id) {
+      // found a game, get out of here
+      return;
+    }
 
-    //HMSET user:1000 username antirez password P1pp0 age 34
+    // otherwise... start a NEW GAME
 
-
-
-
-    // start a NEW GAME
     // get a unique id
-    var game_id = +new Date();
+    game_id = +new Date();
     while (redis.exists(game_id)) {
       game_id = +new Date();
     }
