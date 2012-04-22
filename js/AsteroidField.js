@@ -25,6 +25,15 @@ $(function() {
                 this.rocks.push(asteroid);
             }
         }
+        ,force_field: function(rocks) {
+            var self = this;
+
+            // force all the rocks to the specified state
+            $.each(rocks, function(i, rock) {
+                self.rocks[i].speed = rock.speed;
+                self.rocks[i].vector = rock.vector;
+            });
+        }
         ,update: function() {
             var self = this;
             $.each(this.rocks, function(i, rock) { //  \m\ d(-_- )b

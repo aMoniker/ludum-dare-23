@@ -13,16 +13,8 @@ $(function() {
         }
         ,update_client: function(state) {
             // handle client side state updates
-            var the_one_true_state = $.parseJSON(state);
-
-            console.info('update_client', the_one_true_state);
-
-            for (var property in the_one_true_state) {
-                console.log('property', property);
-            }
-
-            // stop listening after first update for debugging
-            this.socket.on('update_client', function(){});
+            var the_state = $.parseJSON(state);
+            g.af.force_field(the_state.rocks);
         }
         ,new_game: function() {
             var self = this;
