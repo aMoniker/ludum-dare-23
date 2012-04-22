@@ -34,6 +34,9 @@ io.sockets.on('connection', function (socket) {
     var game_id = null;
     redis.zrangebyscore('game_list', 1, 1, function(err, reply) {
       if (reply) {
+
+        console.log('reply', reply);
+
         // take the first game
         game_id = reply[0];
         redis.zadd('game_list', 2, game_id);
