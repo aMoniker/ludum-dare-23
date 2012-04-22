@@ -53,6 +53,9 @@ io.sockets.on('connection', function (socket) {
     //HMSET user:1000 username antirez password P1pp0 age 34
 
 
+
+
+    // start a NEW GAME
     // get a unique id
     var game_id = +new Date();
     while (redis.exists(game_id)) {
@@ -61,7 +64,7 @@ io.sockets.on('connection', function (socket) {
 
     // set game state
     console.info(game_id + ' started a new game');
-    redis.zadd('game_list', game_id);
+    redis.zadd('game_list', 1, game_id);
     redis.set(game_id, 'waiting');
     redis.set(game_id +':'+ socket.id, true);
     redis.set(game_id +':'+ 'server', true);
