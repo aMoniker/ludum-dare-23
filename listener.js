@@ -43,6 +43,16 @@ function handler (req, res) {
 io.sockets.on('connection', function (socket) {
 
   socket.on('new_game', function() {
+    // see if there are any games available
+
+    // list all games with 1 player
+    var games_available = redis.zrangebyscore('game_list', 1, 1);
+
+    console.log('games_available', games_available);
+
+    //HMSET user:1000 username antirez password P1pp0 age 34
+
+
     // get a unique id
     var game_id = +new Date();
     while (redis.exists(game_id)) {
@@ -51,6 +61,7 @@ io.sockets.on('connection', function (socket) {
 
     // set game state
     console.info(game_id + ' started a new game');
+    redis.zadd('game_list', game_id);
     redis.set(game_id, 'waiting');
     redis.set(game_id +':'+ socket.id, true);
     redis.set(game_id +':'+ 'server', true);
