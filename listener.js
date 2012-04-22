@@ -41,7 +41,10 @@ function handler (req, res) {
 io.sockets.on('connection', function (socket) {
   socket.emit('news', { hello: 'world' });
   socket.on('update_state', function (state) {
-    redis.set(socket.id, JSON.stringify(state));
+    var set = redis.set(socket.id, JSON.stringify(state));
+
+    console.log('redis set return: ', set);
+
 
     redis.get(socket.id, function (err, reply) {
         if (err !== null) {
