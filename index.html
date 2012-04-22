@@ -11,7 +11,14 @@
     <script type="text/javascript" src="js/AsteroidField.js"></script>
     <script type="text/javascript" src="js/GameUtils.js"></script>
     <script type="text/javascript" src="js/Game.js"></script>
-
+	<script type="text/javascript" src="js/socket.io.js"></script>
+	<script>
+  		var socket = io.connect('http://ld.greenleaflaboratories.com:1337');
+ 	 	socket.on('news', function (data) {
+    		console.log(data);
+    		socket.emit('update_state', { my: 'data' });
+  		});
+	</script>
 
 
     <style type="text/css">
