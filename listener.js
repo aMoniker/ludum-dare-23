@@ -1,5 +1,5 @@
-var app = require('http').createServer(handler)
-  , io = require('socket.io').listen(app)
+var music = require('http').createServer(handler)
+  , io = require('socket.io').listen(music)
   , fs = require('fs')
   , rs = require('redis')
   , redis = rs.createClient()
@@ -23,7 +23,9 @@ client.hkeys("hash key", function (err, replies) {
 */
 
 
-app.listen(1337);
+music.listen(1337);
+
+io.set('log level', 1);
 
 function handler (req, res) {
   fs.readFile(__dirname + '/index.html',
@@ -41,10 +43,8 @@ function handler (req, res) {
 io.sockets.on('connection', function (socket) {
   socket.emit('news', { hello: 'world' });
   socket.on('update_state', function (state) {
-    var set = redis.set(socket.id, JSON.stringify(state));
-
-    console.log('redis set return: ', set);
-
+    redis.set(socket.id, JSON.stringify(state));
+    redis.expire(socket.id, 60);
 
     redis.get(socket.id, function (err, reply) {
         if (err !== null) {
