@@ -6,7 +6,7 @@ console.log('assigned $?', $);
 $(function() {
     */
 
-if (window === undefined) { window = {}; }
+if (window === undefined) { var window = {}; }
 
 window.GameUtils = Base.extend({
      circles_intersect: function(x1, y1, r1, x2, y2, r2) {
