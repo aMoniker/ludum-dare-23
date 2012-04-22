@@ -5,7 +5,7 @@ window.Game = Base.extend({
     ,p1: undefined
     ,p2: undefined
     ,ticker: undefined
-    ,degree_direction: 0
+    ,state: undefined
     ,constructor: function() {
         // hackery dackery duck
         // here's a wtf!
@@ -38,6 +38,9 @@ window.Game = Base.extend({
         this.ticker = setInterval(function() {
             self.tick.call(self);
         }, 10);
+
+        // blank state
+        this.state = {};
     }
     ,update: function() {
         this.board.update();

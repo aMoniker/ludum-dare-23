@@ -7,6 +7,7 @@ window.GameBoard = Base.extend({
     ,$canvas: undefined
     ,context: undefined
     ,mouse: undefined
+    ,state: undefined
 
     // handlers
     ,handlers: {
@@ -43,6 +44,8 @@ window.GameBoard = Base.extend({
 
         this.mouse.x_real = this.mouse.x - left;
         this.mouse.y_real = this.mouse.y - top;
+
+        g.state.mouse = this.mouse;
 
         if (this.mouse.x >= left
          && this.mouse.x <= (left + this.width)

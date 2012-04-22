@@ -64,6 +64,12 @@ $(function() {
 
                 rock.update();
             });
+
+            // save rock states
+            g.state.rocks = [];
+            $.each(this.rocks, function(i, rock) {
+                g.state.rocks.push(rock);
+            });
         }
         ,draw: function() {
             $.each(this.rocks, function(i, rock) { //  d( -_-)b /m/
