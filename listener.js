@@ -2,6 +2,7 @@ var music = require('http').createServer(handler)
   , io = require('socket.io').listen(music)
   , fs = require('fs')
   , rs = require('redis')
+  , cp = require('child_process')
   ,  $ = require('jquery')
   , redis = rs.createClient()
 
@@ -62,7 +63,22 @@ io.sockets.on('connection', function (socket) {
       // give client their game_id
       socket.emit('new_game_id', game_id);
     });
-  }); 
+
+    // test child process creation/destruction
+    var cmd = 'ls -alh';
+
+    var exec = require('child_process').exec,
+        ls = exec(cmd);
+
+    console.log('Child process started: %d', ls.pid);
+
+    ls.on('exit', function(code, signal) {
+        console.log('exit with code %s and signal %s', code, signal);
+    });
+
+    ls.kill();
+
+  });
 
   socket.on('update_state', function (state, game_id) {
     //var client_id = game_id +':'+ socket.id;

@@ -15,7 +15,7 @@ $(function() {
             // update from server (blurgh)
             this.polling = setInterval(function() {
                 self.socket.emit('request_state', self.game_id);
-            }, 100);
+            }, 1000);
         }
 
         // emitters
