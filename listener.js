@@ -62,9 +62,17 @@ io.sockets.on('connection', function (socket) {
 
       // give client their game_id
       socket.emit('new_game_id', game_id);
+
+      // make a child process running the game in server mode
+      cp.exec('node -h server.js ' + game_id, function (error, stdout, stderr) {
+        console.log('server.js for ' +game_id+ ' finished running', stdout);
+      });
+
+
     });
 
     // test child process creation/destruction
+    /*
     var cmd = 'ls -alh';
 
     var exec = require('child_process').exec,
@@ -77,6 +85,7 @@ io.sockets.on('connection', function (socket) {
     });
 
     ls.kill();
+    */
 
   });
 
