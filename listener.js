@@ -34,7 +34,7 @@ io.sockets.on('connection', function (socket) {
     // see if there are any games available
     var game_id = null;
     redis.zrangebyscore('game_list', 1, 1, function(err, reply) {
-      if ($.isEmptyObject(reply)) {
+      if (!$.isEmptyObject(reply)) {
 
         console.log('reply', reply);
 
