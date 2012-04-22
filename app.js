@@ -42,9 +42,9 @@ function handler (req, res) {
 io.sockets.on('connection', function (socket) {
   socket.emit('news', { hello: 'world' });
   socket.on('update_state', function (state) {
-    redis.set(socket.id, state);
+    redis.set(socket.id, JSON.stringify(state));
 
     var stored_value = redis.get(socket.id);
-    socket.emit('update_client', { state: JSON.stringify(stored_value) });
+    socket.emit('update_client', { state: stored_value });
   });
 });
