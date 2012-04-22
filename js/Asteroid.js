@@ -7,6 +7,8 @@ $(function() {
         ,max_speed: 8
         ,last_touched: undefined
         ,touch_timer: undefined
+        ,last_bumped: undefined
+        ,bump_timer: undefined
         ,constructor: function(x, y, r, s, d) {
             this.radius = r;
             this.speed = s;
