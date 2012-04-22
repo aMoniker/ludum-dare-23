@@ -71,6 +71,8 @@ io.sockets.on('connection', function (socket) {
     //update the server directly for debugging
     var client_id = game_id + ':server';
 
+    console.log('storing state in ' + client_id);
+
     // store state
     if (redis.exists(client_id)) {
       redis.set(client_id, JSON.stringify(state));
@@ -89,6 +91,8 @@ io.sockets.on('connection', function (socket) {
     }
 
     var server_id = game_id + ':server';
+    console.log('server_id', server_id);
+
     redis.get(server_id, function (err, reply) {
       console.log('request state err', err);
       console.log('request state reply', reply);
