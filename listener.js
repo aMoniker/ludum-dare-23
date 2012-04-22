@@ -97,7 +97,7 @@ io.sockets.on('connection', function (socket) {
     redis.get(server_id, function (err, reply) {
       console.log('redis finds...', err, reply);
 
-      if (err !== null && reply !== null) {
+      if (err === null && reply !== null) {
         socket.emit('update_client', reply);
 
         console.log(socket.id + ' requested new state and got it');
