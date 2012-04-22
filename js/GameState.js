@@ -15,6 +15,8 @@ $(function() {
             // handle client side state updates
             var the_one_true_state = $.parseJSON(state);
 
+            console.info('update_client', the_one_true_state);
+
             for (var property in the_one_true_state) {
                 console.log('property', property);
             }

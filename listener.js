@@ -71,7 +71,7 @@ io.sockets.on('connection', function (socket) {
       redis.expire(client_id, 60);
     }
 
-    redis.get(socket.id, function (err, reply) {
+    redis.get(client_id, function (err, reply) {
         if (err !== null) {
           stored_value = err;
         } else {
