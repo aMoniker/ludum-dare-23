@@ -59,7 +59,7 @@ io.sockets.on('connection', function (socket) {
     redis.zadd('game_list', 1, game_id);
     redis.set(game_id, 'waiting');
     redis.set(game_id +':'+ socket.id, true);
-    redis.set(game_id +':'+ 'server', true);
+    redis.set(game_id +':'+ 'server', null);
 
     // clear new game listener
     socket.on('new_game', function(){});
@@ -86,13 +86,9 @@ io.sockets.on('connection', function (socket) {
 
     var server_id = game_id + ':server';
     redis.get(server_id, function (err, reply) {
-      if (err !== null) {
-        stored_value = err;
-      } else {
-        stored_value = reply;
+      if (err !== null && reply !== null) {
+        socket.emit('update_client', reply);
       }
-
-      socket.emit('update_client', stored_value);
     });
   });
 
