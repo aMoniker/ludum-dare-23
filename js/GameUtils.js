@@ -1,12 +1,4 @@
-/*
-console.log('GameUtils $', $);
-if (!$) { $ = require('jquery'); }
-console.log('assigned $?', $);
-
 $(function() {
-    */
-
-if (window === undefined) { var window = {}; }
 
 window.GameUtils = Base.extend({
      circles_intersect: function(x1, y1, r1, x2, y2, r2) {
@@ -65,4 +57,4 @@ window.GameUtils = Base.extend({
      }
 });
 
-//});
+});
