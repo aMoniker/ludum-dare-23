@@ -57,6 +57,8 @@ io.sockets.on('connection', function (socket) {
 
         console.log('stored_value', stored_value);
     });
+    console.log('stored_value 2', stored_value)
+
 
     socket.emit('update_client', stored_value);
   });
