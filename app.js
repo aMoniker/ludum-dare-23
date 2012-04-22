@@ -42,8 +42,9 @@ function handler (req, res) {
 io.sockets.on('connection', function (socket) {
   socket.emit('news', { hello: 'world' });
   socket.on('update_state', function (state) {
-    console.log('state received, trying redis');
+    redis.set(socket.id, state);
 
-    redis.set(socket.id, state, redis.print);
+    var stored_value = redis.get(socket.id);
+    socket.emit('update_client', stored_value);
   });
 });
