@@ -38,6 +38,9 @@ $(function() {
         // receivers
         ,update_client: function(state) {
             // handle client side state updates
+            console.log('state', state);
+            if (state === null || state === undefined) { return; }
+
             var the_state = $.parseJSON(state);
             g.af.force_field(the_state.rocks);
         }
