@@ -67,8 +67,6 @@ io.sockets.on('connection', function (socket) {
       cp.exec('node server.js ' + game_id, function (error, stdout, stderr) {
         console.log('server.js for ' +game_id+ ' finished running', stdout);
       });
-
-
     });
 
     // test child process creation/destruction
