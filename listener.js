@@ -2,7 +2,7 @@ var music = require('http').createServer(handler)
   , io = require('socket.io').listen(music)
   , fs = require('fs')
   , rs = require('redis')
-  , jq = require('jquery')
+  ,  $ = require('jquery')
   , redis = rs.createClient()
 
 
