@@ -1,4 +1,7 @@
+console.log('GameUtils $', $);
 if (!$) { $ = require('jquery'); }
+console.log('assigned $?', $);
+
 $(function() {
 
 window.GameUtils = Base.extend({
