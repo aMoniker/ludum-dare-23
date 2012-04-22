@@ -1,3 +1,8 @@
-console.log('server time');
+console.log('running game server');
+
 var arguments = process.argv.splice(2);
-console.log('arguments', arguments);
+var game_id = arguments[0];
+
+console.log('game_id');
+
+require('js/GameUtils.js');
