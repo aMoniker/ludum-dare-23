@@ -41,10 +41,13 @@ window.Game = Base.extend({
 
         // blank state
         this.state = {};
+        this.gs = new GameState;
     }
     ,update: function() {
         this.board.update();
         this.af.update();
+
+        this.gs.update_state(g.state);
     }
     ,draw: function() {
         this.board.clear();
