@@ -38,6 +38,9 @@ io.sockets.on('connection', function (socket) {
         game_id = reply[0];
         redis.zadd('game_list', 2, game_id);
         redis.set(game_id +':'+ socket.id, true);
+
+        console.log(socket.id + ' joined a game (' +game_id+ ')');
+
         socket.emit('new_game_id', game_id);
       }
     });
@@ -55,7 +58,7 @@ io.sockets.on('connection', function (socket) {
     }
 
     // set game state
-    console.info(game_id + ' started a new game');
+    console.info(socket.id + ' started a new game (' +game_id+ ')');
     redis.zadd('game_list', 1, game_id);
     redis.set(game_id, 'waiting');
     redis.set(game_id +':'+ socket.id, true);
