@@ -44,7 +44,13 @@ io.sockets.on('connection', function (socket) {
   socket.on('update_state', function (state) {
     redis.set(socket.id, JSON.stringify(state));
 
-    var stored_value = redis.get(socket.id);
+    //var stored_value = redis.get(socket.id);
+    var stored_value = '...';
+    redis.get(socket.id, function (err, reply) {
+        console.log('err', err);
+
+        stored_value = err || reply;
+    });
     console.log('stored_value', stored_value);
 
     socket.emit('update_client', stored_value);
