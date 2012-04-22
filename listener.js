@@ -77,15 +77,13 @@ io.sockets.on('connection', function (socket) {
       console.log('storing state');
 
       redis.set(client_id, JSON.stringify(state));
-      redis.expire(client_id, 60);
+      //redis.expire(client_id, 60);
     }
 
     console.log(socket.id + ' updated the state');
   });
 
   socket.on('request_state', function (game_id) {
-    console.log(socket.id + ' requested state...')
-
     if (game_id === undefined) { 
       console.log(socket.id + ' request_state: game_id undefined');
       return;
@@ -95,8 +93,7 @@ io.sockets.on('connection', function (socket) {
     console.log('server_id', server_id);
 
     redis.get(server_id, function (err, reply) {
-      console.log('request state err', err);
-      console.log('request state reply', reply);
+      console.log('redis finds...', err, reply);
 
       if (err !== null && reply !== null) {
         socket.emit('update_client', reply);
