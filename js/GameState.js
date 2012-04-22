@@ -20,7 +20,9 @@ $(function() {
 
         // emitters
         ,update_state: function(state) {
-            this.socket.emit('update_state', state, this.game_id);
+            if (this.game_id !== undefined) {
+                this.socket.emit('update_state', state, this.game_id);
+            }
         }
         ,send_message: function(message) {
             this.socket.emit('send_message', message);

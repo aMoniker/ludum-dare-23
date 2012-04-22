@@ -51,8 +51,7 @@ io.sockets.on('connection', function (socket) {
 
         // set game state
         redis.zadd('game_list', 1, game_id);
-        redis.set(game_id, 'waiting');
-        redis.set(game_id +':'+ socket.id, true);
+        redis.set(game_id +':'+ socket.id, null);
         redis.set(game_id +':'+ 'server', null);
         console.info(socket.id + ' started a new game (' +game_id+ ')');
 
@@ -75,6 +74,8 @@ io.sockets.on('connection', function (socket) {
 
     // store state
     if (redis.exists(client_id)) {
+      console.log('storing state');
+
       redis.set(client_id, JSON.stringify(state));
       redis.expire(client_id, 60);
     }
