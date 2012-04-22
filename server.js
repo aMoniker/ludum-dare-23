@@ -8,3 +8,10 @@ console.log('game_id', game_id);
 require('js/GameUtils.js');
 
 console.log('required gameutils');
+
+console.log('window', window);
+console.log('window.GameUtils', window.GameUtils);
+
+var g = {
+
+};
