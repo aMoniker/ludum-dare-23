@@ -27,6 +27,23 @@ $(function() {
         }
         ,update: function() {
             $.each(this.rocks, function(i, rock) { //  \m\ d(-_- )b
+                //check if asteroid and paddle intersect
+                if (g.utils.circles_intersect(rock.vector[0] , rock.vector[1] , rock.radius,
+                                                 g.board.mouse.x_real, g.board.mouse.y_real, g.board.mouse.radius)
+                 && rock.can_touch()
+                ) {
+                    // asteroid change direction!
+                    var slope = (rock.vector[1] - g.board.mouse.y_real) / (rock.vector[0] - g.board.mouse.x_real);
+                    var rad_direction = Math.atan(slope);
+                    var deg_direction = (rad_direction * (180 / Math.PI)) + 90;
+
+                    if (g.board.mouse.x_real < rock.vector[0]) {
+                        deg_direction += 180; //hax
+                    }
+                    rock.vector[2] = (deg_direction + 180) % 360;
+                    rock.touch();
+                }
+
                 rock.update();
             });
         }
