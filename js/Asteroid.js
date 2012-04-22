@@ -35,17 +35,12 @@ $(function() {
             this.vector[0] = this.vector[0] + cx;
             this.vector[1] = this.vector[1] + cy;
 
-            if (this.vector[0] < 0) {
-                this.vector[0] = g.board.width;
+            // wall bounding
+            if (this.vector[0] < 0 || this.vector[0] > g.board.width) {
+                this.vector[2] = 360 - this.vector[2];
             }
-            if (this.vector[0] > g.board.width) {
-                this.vector[0] = 0;
-            }
-            if (this.vector[1] < 0) {
-                this.vector[1] = g.board.height;
-            }
-            if (this.vector[1] > g.board.height) {
-                this.vector[1] = 0;
+            if (this.vector[1] < 0 || this.vector[1] > g.board.height) {
+                this.vector[2] = ((270 - this.vector[2]) + 270) % 360;
             }
         }
         ,can_touch: function() {
