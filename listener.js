@@ -46,9 +46,13 @@ io.sockets.on('connection', function (socket) {
     // see if there are any games available
 
     // list all games with 1 player
-    var games_available = redis.zrangebyscore('game_list', 1, 1);
+    //var games_available = redis.zrangebyscore('game_list', 1, 1);
+    //console.log('games_available', games_available);
 
-    console.log('games_available', games_available);
+    redis.zrangebyscore('game_list', 1, 1, function(err, reply) {
+      console.log('err', err);
+      console.log('reply', reply);
+    });
 
     //HMSET user:1000 username antirez password P1pp0 age 34
 
