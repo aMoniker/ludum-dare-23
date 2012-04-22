@@ -15,11 +15,12 @@ $(function() {
             // handle client side state updates
         }
         ,new_game: function() {
+            var self = this;
             this.socket.on('new_game_id', function(game_id) {
-                this.game_id = game_id;
+                self.game_id = game_id;
                 this.socket.on('new_game_id', function(){});
             });
-            
+
             this.socket.emit('new_game');
         }
     });
