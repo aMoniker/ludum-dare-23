@@ -10,11 +10,7 @@ var $ = require('jquery');
 console.log('$', $);
 
 //require('/var/www/ld/js/GameUtils.js');
-
 //console.log('required gameutils');
-
-console.log('window', window);
-console.log('window.GameUtils', window.GameUtils);
 
 var g = {
 

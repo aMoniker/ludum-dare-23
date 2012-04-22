@@ -1,3 +1,4 @@
+if (!$) { $ = require('jquery'); }
 $(function() {
 
 window.GameUtils = Base.extend({
