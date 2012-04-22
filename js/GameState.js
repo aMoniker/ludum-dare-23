@@ -2,12 +2,20 @@ $(function() {
     window.GameState = Base.extend({
          socket: undefined
         ,game_id: undefined
+        ,polling: undefined
         ,constructor: function() {
+            var self = this;
+
             this.socket = io.connect('http://ld.greenleaflaboratories.com:1337');
 
             // game events
             this.socket.on('update_client', this.update_client);
             this.socket.on('new_message', this.new_message);
+
+            // update from server (blurgh)
+            this.polling = setInterval(function() {
+                self.socket.emit('request_state', self.game_id);
+            }, 100);
         }
 
         // emitters

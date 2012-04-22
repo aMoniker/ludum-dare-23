@@ -69,29 +69,34 @@ io.sockets.on('connection', function (socket) {
   }); 
 
   socket.on('update_state', function (state, game_id) {
-    var client_id = game_id +':'+ socket.id;
+    //var client_id = game_id +':'+ socket.id;
+
+    //update the server directly for debugging
+    var client_id = game_id;
 
     // store state
     if (redis.exists(client_id)) {
       redis.set(client_id, JSON.stringify(state));
       redis.expire(client_id, 60);
     }
+  });
 
-    /*
-    redis.get(client_id, function (err, reply) {
-        if (err !== null) {
-          stored_value = err;
-        } else {
-          stored_value = reply;
-        }
+  socket.on('request_state', function (game_id) {
+    if (game_id === undefined) { return; }
 
-        socket.emit('update_client', stored_value);
+    var server_id = game_id;
+    redis.get(server_id, function (err, reply) {
+      if (err !== null) {
+        stored_value = err;
+      } else {
+        stored_value = reply;
+      }
+
+      socket.emit('update_client', stored_value);
     });
-    */
+  });
 
-    socket.on('send_message', function (message) {
-      socket.emit('new_message', message);
-    });
-
+  socket.on('send_message', function (message) {
+    socket.emit('new_message', message);
   });
 });
