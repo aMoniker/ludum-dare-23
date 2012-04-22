@@ -6,9 +6,12 @@ var game_id = arguments[0];
 console.log('game_id', game_id);
 
 var $ = require('jquery');
-require('/var/www/ld/js/GameUtils.js');
 
-console.log('required gameutils');
+console.log('$', $);
+
+//require('/var/www/ld/js/GameUtils.js');
+
+//console.log('required gameutils');
 
 console.log('window', window);
 console.log('window.GameUtils', window.GameUtils);
