@@ -48,7 +48,7 @@ window.Game = Base.extend({
         this.board.update();
         this.af.update();
 
-        this.gs.update_state(g.state);
+        //this.gs.update_state(g.state);
     }
     ,draw: function() {
         this.board.clear();
