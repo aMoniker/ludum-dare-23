@@ -5,7 +5,7 @@ $(function() {
             this.socket = io.connect('http://ld.greenleaflaboratories.com:1337');
             
             this.socket.on('update_client', function (state) {
-                console.log('update_client', state);
+                // handle client side state updates
             });
         }
         ,update_state: function(state) {
