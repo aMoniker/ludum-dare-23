@@ -76,6 +76,8 @@ io.sockets.on('connection', function (socket) {
       redis.set(client_id, JSON.stringify(state));
       redis.expire(client_id, 60);
     }
+
+    console.log(socket.id + ' updated the state');
   });
 
   socket.on('request_state', function (game_id) {
@@ -85,6 +87,8 @@ io.sockets.on('connection', function (socket) {
     redis.get(server_id, function (err, reply) {
       if (err !== null && reply !== null) {
         socket.emit('update_client', reply);
+
+        console.log(socket.id + ' requested new state and got it');
       }
     });
   });
