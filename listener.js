@@ -1,4 +1,4 @@
-var music = require('http')
+var music = require('http').createServer()
   , io = require('socket.io').listen(music)
   , fs = require('fs')
   , rs = require('redis')
