@@ -8,6 +8,7 @@ console.log("\nrunning game server");
 var system = require('system');
 console.log('args?', system.args);
 
+/*
 process.stdin.resume();
 process.stdin.setEncoding('utf8'); 
 process.stdin.on('data', function (chunk) { 
@@ -17,6 +18,12 @@ process.stdin.on('data', function (chunk) {
 process.stdin.on('end', function () { 
   process.stdout.write('end'); 
 }); 
+*/
+
+process.on('message', function(m) {
+  console.log('CHILD got message:', m);
+});
+process.send({ foo: 'bar' });
 
 
 

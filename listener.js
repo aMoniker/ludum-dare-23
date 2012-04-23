@@ -64,11 +64,21 @@ io.sockets.on('connection', function (socket) {
       socket.emit('new_game_id', game_id);
 
       // make a child process running the game in server mode
+      /*
       var child = cp.spawn('node server.js ' + game_id);
       child.stdin.write('echo chamber?');
       child.stdout.on('data', function (data) {
         console.log('child data', data);
       });
+      */
+
+      child = cp.fork('server.js', game_id);
+      child.on('message', function(m) {
+        console.log('PARENT got message:', m);
+      });
+      child.send({ hello: 'world' });
+
+      
     });
 
     // test child process creation/destruction
