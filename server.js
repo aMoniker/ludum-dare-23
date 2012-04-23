@@ -5,8 +5,8 @@ console.log("\nrunning game server");
 
 //console.log('game_id', game_id);
 
-var system = require('system');
-console.log('args?', system.args);
+//var system = require('system');
+//console.log('args?', system.args);
 
 /*
 process.stdin.resume();
