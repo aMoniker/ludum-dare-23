@@ -65,8 +65,8 @@ io.sockets.on('connection', function (socket) {
 
       // make a child process running the game in server mode
       var child = cp.spawn('node server.js ' + game_id);
-      spawn.stdin.write('echo chamber?');
-      spawn.stdout.on('data', function (data) {
+      child.stdin.write('echo chamber?');
+      child.stdout.on('data', function (data) {
         console.log('child data', data);
       });
     });
