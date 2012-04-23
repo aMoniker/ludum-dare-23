@@ -16,6 +16,7 @@ music.listen(1337);
 io.set('log level', 1);
 
 function handler (req, res) {
+  /*
   fs.readFile(__dirname + '/index.html',
   function (err, data) {
     if (err) {
@@ -26,6 +27,7 @@ function handler (req, res) {
     res.writeHead(200);
     res.end(data);
   });
+  */
 }
 
 io.sockets.on('connection', function (socket) {
@@ -62,41 +64,7 @@ io.sockets.on('connection', function (socket) {
 
       // give client their game_id
       socket.emit('new_game_id', game_id);
-
-      // make a child process running the game in server mode
-      /*
-      var child = cp.spawn('node server.js ' + game_id);
-      child.stdin.write('echo chamber?');
-      child.stdout.on('data', function (data) {
-        console.log('child data', data);
-      });
-      */
-
-      child = cp.fork('server.js', [game_id]);
-      child.on('message', function(m) {
-        console.log('PARENT got message:', m);
-      });
-      child.send({ hello: 'world' });
-
-
     });
-
-    // test child process creation/destruction
-    /*
-    var cmd = 'ls -alh';
-
-    var exec = require('child_process').exec,
-        ls = exec(cmd);
-
-    console.log('Child process started: %d', ls.pid);
-
-    ls.on('exit', function(code, signal) {
-        console.log('exit with code %s and signal %s', code, signal);
-    });
-
-    ls.kill();
-    */
-
   });
 
   socket.on('update_state', function (state, game_id) {
