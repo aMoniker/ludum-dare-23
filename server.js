@@ -8,6 +8,17 @@ console.log("\nrunning game server");
 var system = require('system');
 console.log('args?', system.args);
 
+process.stdin.resume();
+process.stdin.setEncoding('utf8'); 
+process.stdin.on('data', function (chunk) { 
+  process.stdout.write('data: ' + chunk);
+}); 
+
+process.stdin.on('end', function () { 
+  process.stdout.write('end'); 
+}); 
+
+
 
 /*
 var $ = require('jquery');

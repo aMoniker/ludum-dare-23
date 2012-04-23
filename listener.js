@@ -64,12 +64,13 @@ io.sockets.on('connection', function (socket) {
       socket.emit('new_game_id', game_id);
 
       // make a child process running the game in server mode
-      cp.exec('phantomjs server.js ' + game_id, function (error, stdout, stderr) {
+      var child = cp.spawn('node server.js ' + game_id, function (error, stdout, stderr) {
         console.log('server.js for ' +game_id+ ' finished running', stdout);
 
         if (error) {console.log('server.js error', error);}
         if (stderr) {console.log('server.js stderr', stderr);}
       });
+      spawn.stdin.write('echo chamber?');
     });
 
     // test child process creation/destruction
