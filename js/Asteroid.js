@@ -36,10 +36,11 @@ $(function() {
             this.vector[1] = this.vector[1] + cy;
 
             // wall bounding
-            if (this.vector[0] < 0 || this.vector[0] > g.board.width) {
+            var padding = this.radius * 0.8;
+            if (this.vector[0] < (0 + padding) || this.vector[0] > (g.board.width - padding)) {
                 this.vector[2] = 360 - this.vector[2];
             }
-            if (this.vector[1] < 0 || this.vector[1] > g.board.height) {
+            if (this.vector[1] < (0 + padding) || this.vector[1] > (g.board.height - padding)) {
                 this.vector[2] = ((270 - this.vector[2]) + 270) % 360;
             }
         }
