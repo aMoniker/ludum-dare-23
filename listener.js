@@ -13,11 +13,22 @@ redis.on("error", function (err) {
 
 music.listen(1337);
 
+/* message format between parent/child processes
+      { 'event': 'your_special_event'
+       ,'data'   : { all: 'your shit' } }
+ -------------------------------------------- */
 child = cp.fork('server.js');
 child.on('message', function(m) {
   console.log('PARENT got message:', m);
+  switch (m.event) {
+    case 'test':
+      console.log('PARENT received test:', m.data)
+      break;
+    default: break;
+  }
+
 });
-child.send({ hello: 'world' });
+child.send({ event: 'test', data: { all: 'sorts', of: 'crap' } });
 
 // websocketry
 io.sockets.on('connection', function (socket) {
