@@ -1,4 +1,4 @@
-var music = require('http').createServer(handler)
+var music = require('http')
   , io = require('socket.io').listen(music)
   , fs = require('fs')
   , rs = require('redis')
@@ -6,37 +6,27 @@ var music = require('http').createServer(handler)
   ,  $ = require('jquery')
   , redis = rs.createClient()
 
-
+io.set('log level', 1);
 redis.on("error", function (err) {
     console.log("Error " + err);
 });
 
 music.listen(1337);
 
-io.set('log level', 1);
+child = cp.fork('server.js', [game_id]);
+child.on('message', function(m) {
+  console.log('PARENT got message:', m);
+});
+child.send({ hello: 'world' });
 
-function handler (req, res) {
-  /*
-  fs.readFile(__dirname + '/index.html',
-  function (err, data) {
-    if (err) {
-      res.writeHead(500);
-      return res.end('Error loading index.html');
-    }
-
-    res.writeHead(200);
-    res.end(data);
-  });
-  */
-}
-
+// websocketry
 io.sockets.on('connection', function (socket) {
-
+  /* New/Join Game */
   socket.on('new_game', function() {
     // see if there are any games available
     var game_id = null;
     redis.zrangebyscore('game_list', 1, 1, function(err, reply) {
-      if (!$.isEmptyObject(reply)) {
+      if (!$.isEmptyObject(reply) {
         // take the first game if one is available
         game_id = reply[0];
         redis.zadd('game_list', 2, game_id);
@@ -45,7 +35,6 @@ io.sockets.on('connection', function (socket) {
         console.log(socket.id + ' joined a game       (' +game_id+ ')');
       } else {
         // make a new game if none are available
-
         game_id = +new Date();
         while (redis.exists(game_id)) {
           // ensure unique game_id
@@ -57,9 +46,6 @@ io.sockets.on('connection', function (socket) {
         redis.set(game_id +':'+ socket.id, null);
         redis.set(game_id +':'+ 'server', null);
         console.info(socket.id + ' started a new game (' +game_id+ ')');
-
-        // clear new game listener (does this work?)
-        socket.on('new_game', function(){});
       }
 
       // give client their game_id
@@ -67,16 +53,15 @@ io.sockets.on('connection', function (socket) {
     });
   });
 
+  /* Game State */
   socket.on('update_state', function (state, game_id) {
-    //var client_id = game_id +':'+ socket.id;
-
     //update the server directly for debugging
-    var client_id = game_id + ':server';
+    //var client_id = game_id +':'+ socket.id;
+    var client_key = game_id + ':server';
 
     // store state
-    if (redis.exists(client_id)) {
-      redis.set(client_id, JSON.stringify(state));
-      //redis.expire(client_id, 60);
+    if (redis.exists(client_key)) {
+      redis.set(client_key, JSON.stringify(state));
     }
   });
 
@@ -86,14 +71,15 @@ io.sockets.on('connection', function (socket) {
       return;
     }
 
-    var server_id = game_id + ':server';
-    redis.get(server_id, function (err, reply) {
+    var server_key = game_id + ':server';
+    redis.get(server_key, function (err, reply) {
       if (err === null && reply !== null) {
         socket.emit('update_client', reply);
       }
     });
   });
 
+  /* Chat */
   socket.on('send_message', function (message) {
     socket.emit('new_message', message);
   });
