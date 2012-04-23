@@ -13,7 +13,7 @@ redis.on("error", function (err) {
 
 music.listen(1337);
 
-child = cp.fork('server.js', [game_id]);
+child = cp.fork('server.js');
 child.on('message', function(m) {
   console.log('PARENT got message:', m);
 });
