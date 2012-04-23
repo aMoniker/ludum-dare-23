@@ -72,13 +72,13 @@ io.sockets.on('connection', function (socket) {
       });
       */
 
-      child = cp.fork('server.js', game_id);
+      child = cp.fork('server.js', [game_id]);
       child.on('message', function(m) {
         console.log('PARENT got message:', m);
       });
       child.send({ hello: 'world' });
 
-      
+
     });
 
     // test child process creation/destruction
